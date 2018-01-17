@@ -1,4 +1,4 @@
-var cal = function (){
+var calculadora = function (){
 	//Inicializacion de variables
 	var numero ; 
 	var numero2;// variable auxiliar 
@@ -13,32 +13,22 @@ var cal = function (){
 
 	// obtendo las las teclas
 	var teclas = document.querySelectorAll(".tecla");
+	 this.teclaMini = function  (){
 
-	 // recoremos las teclas asignadoles funciones 
-	 for (var i = 0; i < teclas.length; i++ ){
-	 	//asigno funcion al para hacer pequeño la tecla al aplastar 
-	 	teclas[i].onmousedown = function (){
-	 		auxAnchoTecla =  this.style.width;
 	 		this.style.border= "double 0px black";
 	 		this.style.padding= "1%";
-		}
-
-		//Funciones para  restituir la tecla 
-		teclas[i].onmouseup = function (){
-			this.style.width=auxAnchoTecla;
+	 		if (this.id == "mas"){
+	 				this.style.padding= "5%";
+	 		}
+	}
+	 this.teclaNormal = function  (){
 			this.style.border= "none";
 	 		this.style.padding= "0";
 
-		}
-		teclas[i].onmouseout = function (){
-			this.style.width=auxAnchoTecla;
-			this.style.border= "none";
-	 		this.style.padding= "0";
+	}
 
-		}
-
-		//agrego proceso de validacion de la tecla "Que tecla peciono (Clicl)"k
-		teclas[i].onclick = function (){
+	//función quevalida las teclas  
+	this.validarTecla = function (){
 			switch (this.id){
 				case "on": // telca de encendido limpia la pantalla y pone 0 a los numeros
 					numero = 0;
@@ -63,7 +53,9 @@ var cal = function (){
 						
 						
 					} else {
-						numero2 = igual(numero, numero2, operacion);
+						if (numero != ""){ 
+							numero2 = igual(numero, numero2, operacion);
+						}
 					}
 					operacion = "suma";
 					numero="";
@@ -75,7 +67,9 @@ var cal = function (){
 						
 						
 					} else {
-						numero2 = igual(numero,numero2,  operacion);
+						if (numero != ""){ 
+						numero2 = igual(numero, numero2,  operacion);
+						}
 					}
 					operacion = "divicion";
 					numero="";
@@ -87,7 +81,9 @@ var cal = function (){
 						
 						
 					} else {
+						if (numero != ""){ 
 						numero2 = igual(numero, numero2, operacion);
+						}
 					}
 					operacion = "por";
 					numero="";
@@ -102,7 +98,9 @@ var cal = function (){
 						
 						
 					} else {
+						if (numero != ""){ 
 						numero2 = igual(numero,numero2, operacion);
+						}
 					}
 					operacion = "resta";
 					numero="";
@@ -111,17 +109,15 @@ var cal = function (){
 
 				break;
 				case "igual": //boton igual 
-						if (operacion != "igual"){
-							console.log("mostrar" , igual(numero, numero2, operacion));
-							mostrar(igual(numero, numero2, operacion));
-							auxOperacion=operacion;
-						
-						}
-					
-						
-
-							
-								
+					if (numero != ""){
+						mostrar(igual(numero, numero2, operacion));
+						numero2= igual(numero, numero2, operacion);
+						auxNum = numero;
+						numero="";
+					} else {
+						mostrar (igual(auxNum, numero2, operacion));
+						numero2= igual(auxNum, numero2, operacion);
+					}
 					
 				break;
 				default: //la tecla presionada es un numero.
@@ -136,23 +132,29 @@ var cal = function (){
 					mostrar(numero);	
 				break;
 
-
-
 			}
-			console.log("n:", numero,"n2:" ,numero2, operacion);
 			
 
 		}
 
+	 // recoremos las teclas asignadoles funciones 
+	 for (var i = 0; i < teclas.length; i++ ){
+	 	//asigno Escuchadores  
+		teclas[i].addEventListener('mousedown',teclaMini,false);
+		teclas[i].addEventListener('mouseup',teclaNormal,false);
+		teclas[i].addEventListener('mouseout',teclaNormal,false);
+		teclas[i].addEventListener("click", validarTecla, false);
+
 	 }
 
 	 //funcion para actualizar pantalla
-	 var mostrar = function (valor){
+	  this.mostrar = function (valor){
 	 	pantalla.innerHTML = valor;
+	 	pantalla.innerHTML=pantalla.innerHTML.substr(0,8);
 	 }
 
-	 //funcio que realiza el calculo 
-	 var igual = function (n1,n2,operacion){
+	 //funcio que realiza el calculo devuelve el resultado 
+	 this.igual = function (n1,n2,operacion){
 	 	if (operacion == "suma"){
 	 		return parseFloat(n1)+parseFloat(n2);
 	 	}
@@ -163,18 +165,11 @@ var cal = function (){
 	 		return parseFloat(n1)*parseFloat(n2);
 
 	 	}
-	 	if (operacion == "divicion"){
-
-	 		
+	 	if (operacion == "divicion"){		
 	 		return (parseFloat(n2)) / parseFloat(n1 );
-
 	 	}
 
 	 }
-
-
-
-
 }
 
-cal();
+calculadora();
