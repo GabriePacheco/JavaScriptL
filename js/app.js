@@ -1,11 +1,12 @@
 var cal = function (){
 	//Inicializacion de variables
 	var numero ; 
-	var nuemero2;// variable auxiliar 
+	var numero2;// variable auxiliar 
 	var operacion; 
 	numero = 0;
 	numero2 =0;
 	operacion ="";
+	cigual =0;
 
 	//agsino la pantalla a variable
 	var pantalla = document.getElementById("display");
@@ -41,7 +42,8 @@ var cal = function (){
 			switch (this.id){
 				case "on": // telca de encendido limpia la pantalla y pone 0 a los numeros
 					numero = 0;
-					nuemero2=0;
+					numero2=0;
+					operacion ="";
 					mostrar (numero);
 				break;
 				case "punto": //al presionar puto 
@@ -55,7 +57,7 @@ var cal = function (){
 					numero = numero * (-1);
 					mostrar (numero);
 				break;
-				case "mas": 
+				case "mas": // sumar 
 					if (numero2 == 0 && operacion == "" ){
 						numero2=numero;
 						
@@ -67,19 +69,19 @@ var cal = function (){
 					numero="";
 					mostrar(numero);
 				break;
-				case "dividido": 
+				case "dividido":  //boton para dividir 
 					if (numero2 == 0 && operacion == "" ){
 						numero2=numero;
 						
 						
 					} else {
-						numero2 = igual(numero2, numero,operacion);
+						numero2 = igual(numero,numero2,  operacion);
 					}
 					operacion = "divicion";
 					numero="";
 					mostrar(numero);
 				break;
-				case "por": 
+				case "por": // boton multiplicar
 					if (numero2 == 0 && operacion == "" ){
 						numero2=numero;
 						
@@ -94,13 +96,13 @@ var cal = function (){
 
 				break;
 
-				case "menos": 
+				case "menos":  //boton para restar
 					if (numero2 == 0 && operacion == "" ){
 						numero2=numero;
 						
 						
 					} else {
-						numero2 = igual(numero2,numero, operacion);
+						numero2 = igual(numero,numero2, operacion);
 					}
 					operacion = "resta";
 					numero="";
@@ -108,13 +110,19 @@ var cal = function (){
 	
 
 				break;
-				case "igual":
-					numero = igual(numero, numero2, operacion);
-					console.log (numero , numero2, operacion);
-					numero2=0;
-					operacion ="";
-					mostrar (numero);
+				case "igual": //boton igual 
+						if (operacion != "igual"){
+							console.log("mostrar" , igual(numero, numero2, operacion));
+							mostrar(igual(numero, numero2, operacion));
+							auxOperacion=operacion;
+						
+						}
+					
+						
 
+							
+								
+					
 				break;
 				default: //la tecla presionada es un numero.
 					if (pantalla.innerHTML=="0" || pantalla.innerHTML == ""){
@@ -131,6 +139,8 @@ var cal = function (){
 
 
 			}
+			console.log("n:", numero,"n2:" ,numero2, operacion);
+			
 
 		}
 
@@ -147,14 +157,16 @@ var cal = function (){
 	 		return parseFloat(n1)+parseFloat(n2);
 	 	}
 	 	if (operacion == "resta"){
-	 		return parseFloat(n2)-parseFloat(n1);
+	 		return (parseFloat(n2)) - (parseFloat(n1));
 	 	}
 	 	if (operacion == "por"){
 	 		return parseFloat(n1)*parseFloat(n2);
 
 	 	}
 	 	if (operacion == "divicion"){
-	 		return parseFloat(n2)/parseFloat(n2);
+
+	 		
+	 		return (parseFloat(n2)) / parseFloat(n1 );
 
 	 	}
 
